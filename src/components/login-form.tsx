@@ -1,6 +1,6 @@
 "use client";
 
-import api, { urls } from "@/api";
+import { login } from "@/api";
 import { useAuth } from "@/context/authContext";
 import { Button, CircularProgress, TextField } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
@@ -14,20 +14,14 @@ interface ILoginPayload {
 }
 
 const LoginForm: React.FC = () => {
-  const { setUser } = useAuth();
+  const { login: authenticateUser } = useAuth();
   const router = useRouter();
 
   const mutation = useMutation({
-    mutationFn: async ({ email, password }: ILoginPayload) => {
-      try {
-        const response = await api.post(urls.auth.login, { email, password });
-        setUser(response.data.user);
-        localStorage.setItem("accessToken", response.data.accessToken);
-        router.push("/");
-        return response.data;
-      } catch (error) {
-        throw new Error("Login failed");
-      }
+    mutationFn: login,
+    onSuccess: (data) => {
+      authenticateUser(data);
+      router.push("/");
     },
   });
 

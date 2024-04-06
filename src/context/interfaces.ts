@@ -1,4 +1,4 @@
-import { IUser } from "@/interface/user";
+import { IAuth, IUser } from "@/interfaces";
 
 export interface IAuthState {
   isAuthenticated: boolean;
@@ -14,6 +14,7 @@ export interface IAuthContextValue {
   isAuthenticated: boolean;
   user: IUser;
   setUser: (userData: IUser) => void;
+  login: (data: IAuth) => void;
   logout: () => void;
 }
 
