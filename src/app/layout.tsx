@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <StyledEngineProvider injectFirst>
         <body className={font.className}>
           <AppRouterCacheProvider

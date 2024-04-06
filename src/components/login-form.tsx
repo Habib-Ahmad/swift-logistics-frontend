@@ -2,7 +2,7 @@
 
 import { login } from "@/api";
 import { useAuth } from "@/context/authContext";
-import { Button, CircularProgress, TextField } from "@mui/material";
+import { Button, CircularProgress, TextField, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ const LoginForm: React.FC = () => {
   const { login: authenticateUser } = useAuth();
   const router = useRouter();
 
-  const mutation = useMutation({
+  const { mutateAsync, isPending, error } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
       authenticateUser(data);
@@ -26,7 +26,7 @@ const LoginForm: React.FC = () => {
   });
 
   const submit = async (values: ILoginPayload) => {
-    mutation.mutateAsync(values);
+    mutateAsync(values);
   };
 
   return (
@@ -71,8 +71,14 @@ const LoginForm: React.FC = () => {
             Forgot password?
           </Button>
 
+          {error && (
+            <Typography className="text-center text-red-600 font-semibold mb-3">
+              {error.message}
+            </Typography>
+          )}
+
           <Button type="submit" variant="contained" fullWidth>
-            {mutation.isPending ? <CircularProgress size={25} /> : "Login"}
+            {isPending ? <CircularProgress size={25} /> : "Login"}
           </Button>
         </Form>
       )}

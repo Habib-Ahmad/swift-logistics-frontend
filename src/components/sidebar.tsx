@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
+import { useTheme } from "next-themes";
 import {
   AllInbox,
   Analytics,
@@ -15,8 +17,6 @@ import {
 import { Box, Typography } from "@mui/material";
 import logo from "@/assets/logo.svg";
 import logoDark from "@/assets/logo-dark.svg";
-import Image from "next/image";
-import { useTheme } from "next-themes";
 
 const mainMenu = [
   {
@@ -83,12 +83,13 @@ const internalTools = [
 ];
 
 const Sidebar: React.FC = () => {
-  const { theme } = useTheme();
+  const { theme, systemTheme } = useTheme();
+  const currentTheme = theme === "system" ? systemTheme : theme;
 
   return (
     <Box className="flex-1 pb-4 h-dvh max-h-dvh overflow-y-scroll no-scrollbar">
       <Box className="block mx-auto mt-4 mb-8 w-min">
-        {theme == "dark" ? (
+        {currentTheme == "dark" ? (
           <Image src={logoDark} alt="Swift Logistics" />
         ) : (
           <Image src={logo} alt="Swift Logistics" />

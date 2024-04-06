@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { Avatar, Box, IconButton } from "@mui/material";
 import { NotificationsNoneRounded } from "@mui/icons-material";
-import { ThemeSwitch } from ".";
 import line from "@/assets/vertical-line.svg";
+import { ThemeSwitch } from ".";
 
 const Topbar: React.FC = () => {
   return (

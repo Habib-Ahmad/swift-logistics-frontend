@@ -1,4 +1,5 @@
-import { api, urls } from ".";
+import axios from "axios";
+import { BASEURL, urls } from ".";
 
 interface ILoginPayload {
   email: string;
@@ -7,7 +8,7 @@ interface ILoginPayload {
 
 export const login = async (payload: ILoginPayload) => {
   try {
-    const response = await api.post(urls.auth.login, payload, {
+    const response = await axios.post(BASEURL + urls.auth.login, payload, {
       withCredentials: true,
     });
     return response.data;

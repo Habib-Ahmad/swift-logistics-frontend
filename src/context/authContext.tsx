@@ -6,7 +6,7 @@ import { IAuthProviderProps, IAuthContextValue } from "./interfaces";
 import actions from "./actions";
 import { useQuery } from "@tanstack/react-query";
 import { store } from "@/utils";
-import { BASEURL, api, urls } from "@/api";
+import { api, urls } from "@/api";
 import { IAuth, IUser } from "@/interfaces";
 
 const AuthContext = createContext<IAuthContextValue | undefined>(undefined);
@@ -29,10 +29,9 @@ const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
     queryKey: ["user"],
     queryFn: async () => {
       try {
-        const response = await api.get(`${BASEURL}${urls.auth.getUser}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await api.get(urls.auth.getUser);
         setUser(response.data.user);
+        return response.data;
       } catch (error) {
         throw new Error("Failed to fetch user");
       }

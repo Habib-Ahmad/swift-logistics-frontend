@@ -1,13 +1,11 @@
-"use server";
 import axios from "axios";
 import { store } from "@/utils";
-import { BASEURL } from ".";
-import { cookies } from "next/headers";
+import { BASEURL, urls } from ".";
 
 export const refreshToken = async () => {
   try {
     const response = await axios.post(
-      `${BASEURL}/users/refreshToken`,
+      BASEURL + urls.auth.refreshToken,
       {},
       {
         withCredentials: true,
@@ -20,7 +18,6 @@ export const refreshToken = async () => {
   } catch (error) {
     store.removeAccessToken();
     store.removeAccessExpiry();
-    cookies().delete("refreshToken");
-    throw error;
+    throw new Error("Failed to fetch refresh token");
   }
 };
