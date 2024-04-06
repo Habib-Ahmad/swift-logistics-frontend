@@ -10,6 +10,22 @@ const theme = createTheme({
       main: "#127aff",
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "capitalize",
+        },
+      },
+    },
+    MuiCircularProgress: {
+      styleOverrides: {
+        root: {
+          color: "white",
+        },
+      },
+    },
+  },
 });
 
 export default theme;

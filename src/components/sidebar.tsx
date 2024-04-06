@@ -88,10 +88,10 @@ const Sidebar: React.FC = () => {
   return (
     <Box className="flex-1 pb-4 h-dvh max-h-dvh overflow-y-scroll no-scrollbar">
       <Box className="block mx-auto mt-4 mb-8 w-min">
-        {theme == "light" ? (
-          <Image src={logo} alt="Swift Logistics" />
-        ) : (
+        {theme == "dark" ? (
           <Image src={logoDark} alt="Swift Logistics" />
+        ) : (
+          <Image src={logo} alt="Swift Logistics" />
         )}
       </Box>
 
@@ -120,7 +120,7 @@ const Sidebar: React.FC = () => {
           <Box
             key={item.name}
             component={Link}
-            href={!item.comingSoon ? "" : item.to}
+            href={item.comingSoon ? "" : item.to}
             className="flex items-center px-4 py-3 hover:bg-primary hover:text-white cursor-pointer rounded-full transition duration-100"
           >
             {item.icon}

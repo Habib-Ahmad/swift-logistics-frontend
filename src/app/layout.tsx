@@ -3,14 +3,13 @@ import { Nunito } from "next/font/google";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import "./globals.css";
 import {
-  Box,
   CssBaseline,
   StyledEngineProvider,
   ThemeProvider,
 } from "@mui/material";
 import theme from "@/theme";
 import { ThemeProvider as NextThemeProvider } from "next-themes";
-import { Sidebar, Topbar } from "@/components";
+import { LayoutFilter } from "@/components";
 
 const font = Nunito({
   subsets: ["latin"],
@@ -41,13 +40,7 @@ export default function RootLayout({
                 defaultTheme="system"
                 enableSystem
               >
-                <Box className="flex">
-                  <Sidebar />
-                  <Box className="flex-[4] px-10 py-5 bg-slate-100 dark:bg-slate-900">
-                    <Topbar />
-                    {children}
-                  </Box>
-                </Box>
+                <LayoutFilter>{children}</LayoutFilter>
               </NextThemeProvider>
             </ThemeProvider>
           </AppRouterCacheProvider>
