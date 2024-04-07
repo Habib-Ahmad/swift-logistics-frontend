@@ -28,7 +28,6 @@ const mainMenu = [
     name: "Vehicles",
     to: "/vehicles",
     icon: <LocalShipping />,
-    comingSoon: true,
   },
   {
     name: "Drivers",
