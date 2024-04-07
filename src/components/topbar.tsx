@@ -9,7 +9,7 @@ const Topbar: React.FC = () => {
     <Box className="flex items-center justify-end space-x-4">
       <Box className="flex">
         <IconButton>
-          <NotificationsNoneRounded />
+          <NotificationsNoneRounded className="dark:text-gray-300" />
         </IconButton>
         <ThemeSwitch />
       </Box>

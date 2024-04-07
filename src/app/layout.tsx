@@ -2,12 +2,7 @@ import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import "./globals.css";
-import {
-  CssBaseline,
-  StyledEngineProvider,
-  ThemeProvider,
-} from "@mui/material";
-import theme from "@/theme";
+import { StyledEngineProvider } from "@mui/material";
 import { ThemeProvider as NextThemeProvider } from "next-themes";
 import { LayoutFilter } from "@/components";
 
@@ -33,16 +28,13 @@ export default function RootLayout({
           <AppRouterCacheProvider
             options={{ key: "css", enableCssLayer: true }}
           >
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <NextThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-              >
-                <LayoutFilter>{children}</LayoutFilter>
-              </NextThemeProvider>
-            </ThemeProvider>
+            <NextThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+            >
+              <LayoutFilter>{children}</LayoutFilter>
+            </NextThemeProvider>
           </AppRouterCacheProvider>
         </body>
       </StyledEngineProvider>

@@ -13,7 +13,11 @@ const ThemeSwitch: React.FC = () => {
         currentTheme == "dark" ? setTheme("light") : setTheme("dark")
       }
     >
-      {currentTheme == "dark" ? <DarkMode /> : <LightMode />}
+      {currentTheme == "dark" ? (
+        <DarkMode className="text-gray-300" />
+      ) : (
+        <LightMode className="text-yellow-500" />
+      )}
     </IconButton>
   );
 };
