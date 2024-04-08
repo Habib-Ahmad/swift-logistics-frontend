@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthProvider from "@/context/authContext";
 import { useTheme } from "next-themes";
 import theme from "@/theme";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 interface IProps {
   children: React.ReactNode;
@@ -31,13 +32,14 @@ const LayoutFilter: React.FC<IProps> = ({ children }) => {
           ) : (
             <Box className="flex">
               <Sidebar />
-              <Box className="flex-[4] px-10 py-5 bg-slate-100 dark:bg-slate-900">
+              <Box className="flex-[4] px-10 py-5 bg-slate-100 dark:bg-slate-900 max-h-[100vh] overflow-y-scroll">
                 <Topbar />
                 {children}
               </Box>
             </Box>
           )}
         </AuthProvider>
+        <ReactQueryDevtools />
       </QueryClientProvider>
     </ThemeProvider>
   );

@@ -1,5 +1,5 @@
 "use client";
-import { getAllVehicles, updateVehicle } from "@/api";
+import { updateVehicle } from "@/api";
 import { IVehicle } from "@/interfaces";
 import {
   Box,
@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
@@ -36,10 +36,14 @@ const vehicleTypes = [
 ];
 
 const EditVehicle: React.FC<IProps> = ({ data }) => {
+  const queryClient = useQueryClient();
+
   const { mutateAsync, isPending, error, isSuccess } = useMutation({
-    mutationKey: ["vehicles"],
+    mutationKey: ["vehicles", data.id],
     mutationFn: updateVehicle,
-    onSuccess: getAllVehicles,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["vehicles"], exact: true });
+    },
   });
 
   const submit = async (values: IVehicle) => {

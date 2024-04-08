@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { AddBox } from "@mui/icons-material";
 import {
@@ -11,8 +10,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
-import { addVehicle, getAllVehicles } from "@/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addVehicle } from "@/api";
 import { IVehicle } from "@/interfaces";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -30,12 +29,15 @@ const vehicleTypes = [
 ];
 
 const AddVehicle: React.FC = () => {
+  const queryClient = useQueryClient();
+
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { mutateAsync, isPending, error, isSuccess } = useMutation({
-    mutationKey: ["vehicles"],
+  const { mutate, isPending, error, isSuccess } = useMutation({
     mutationFn: addVehicle,
-    onSuccess: getAllVehicles,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["vehicles"], exact: true });
+    },
   });
 
   const openModal = () => {
@@ -47,7 +49,7 @@ const AddVehicle: React.FC = () => {
   };
 
   const submit = async (values: IVehicle) => {
-    mutateAsync(values);
+    mutate(values);
   };
 
   return (
@@ -201,7 +203,7 @@ const AddVehicle: React.FC = () => {
               <Button
                 type="submit"
                 variant="contained"
-                className="block m-aut0 w-1/2"
+                className="block m-auto w-1/2"
               >
                 {isPending ? (
                   <CircularProgress size={25} className="text-white" />
