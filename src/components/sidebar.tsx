@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "next-themes";
@@ -85,6 +86,8 @@ const Sidebar: React.FC = () => {
   const { theme, systemTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
 
+  const [active, setActive] = useState("Dashboard");
+
   return (
     <Box className="flex-1 pb-4 h-dvh max-h-dvh overflow-y-scroll no-scrollbar">
       <Box className="block mx-auto mt-4 mb-8 w-min">
@@ -105,7 +108,10 @@ const Sidebar: React.FC = () => {
             key={item.name}
             component={Link}
             href={item.comingSoon ? "" : item.to}
-            className="flex items-center px-4 py-3 hover:bg-primary hover:text-white cursor-pointer rounded-full transition duration-100"
+            className={`flex items-center px-4 py-3 my-1 hover:bg-primary hover:text-white cursor-pointer rounded-full transition duration-100 ${
+              active === item.name && "bg-primary !text-white"
+            }`}
+            onClick={() => setActive(item.name)}
           >
             {item.icon}
             <Typography className="ml-3 text-sm">{item.name}</Typography>
@@ -121,7 +127,10 @@ const Sidebar: React.FC = () => {
             key={item.name}
             component={Link}
             href={item.comingSoon ? "" : item.to}
-            className="flex items-center px-4 py-3 hover:bg-primary hover:text-white cursor-pointer rounded-full transition duration-100"
+            className={`flex items-center px-4 py-3 my-1 hover:bg-primary hover:text-white cursor-pointer rounded-full transition duration-100 ${
+              active === item.name && "bg-primary !text-white"
+            }`}
+            onClick={() => setActive(item.name)}
           >
             {item.icon}
             <Typography className="ml-3 text-sm">{item.name}</Typography>
