@@ -12,10 +12,9 @@ api.interceptors.request.use(
   async (config) => {
     const accessToken = store.getAccessToken();
     if (accessToken) {
-      let accessExpiry: string | Date | null | undefined =
-        store.getAccessExpiry();
+      let accessExpiry: any = store.getAccessExpiry();
       if (accessExpiry) {
-        accessExpiry = new Date(parseInt(accessExpiry));
+        accessExpiry = new Date(accessExpiry);
         if (accessExpiry && accessExpiry <= new Date()) {
           // Access token has expired, make a request to refresh token API
           const newAccessToken = await refreshToken();
