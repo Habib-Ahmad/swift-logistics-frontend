@@ -30,3 +30,12 @@ export const updateDriver = async (payload: IDriver) => {
     throw new Error("Update failed");
   }
 };
+
+export const deleteDriver = async (id: string) => {
+  try {
+    const response = await api.delete(`${urls.drivers.delete}/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error("Deletion failed");
+  }
+};

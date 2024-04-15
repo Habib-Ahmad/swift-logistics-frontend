@@ -1,7 +1,7 @@
 "use client";
 import { getAllVehicles } from "@/api";
 import { IVehicle } from "@/interfaces";
-import { Box, CircularProgress } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";

@@ -4,6 +4,7 @@ const Table: React.FC<DataGridProps> = (props) => {
   return (
     <DataGrid
       {...props}
+      rows={props.rows || []}
       hideFooter
       disableRowSelectionOnClick
       sx={{

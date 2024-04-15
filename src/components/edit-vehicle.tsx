@@ -195,7 +195,7 @@ const EditVehicle: React.FC<IProps> = ({ data }) => {
           <Button
             type="submit"
             variant="contained"
-            className="block m-aut0 w-1/2"
+            className="block m-auto w-1/2"
           >
             {isPending ? (
               <CircularProgress size={25} className="text-white" />

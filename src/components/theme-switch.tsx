@@ -1,22 +1,33 @@
 "use client";
+import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { IconButton } from "@mui/material";
-import { DarkMode, LightMode } from "@mui/icons-material";
+import { DarkModeOutlined, LightModeOutlined } from "@mui/icons-material";
 
 const ThemeSwitch: React.FC = () => {
-  const { systemTheme, theme, setTheme } = useTheme();
-  const currentTheme = theme === "system" ? systemTheme : theme;
+  const { resolvedTheme, setTheme } = useTheme();
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <IconButton
-      onClick={() =>
-        currentTheme == "dark" ? setTheme("light") : setTheme("dark")
-      }
+      onClick={() => {
+        const newTheme = resolvedTheme === "dark" ? "light" : "dark";
+        setTheme(newTheme);
+      }}
     >
-      {currentTheme == "dark" ? (
-        <DarkMode className="text-gray-300" />
+      {resolvedTheme == "dark" ? (
+        <DarkModeOutlined className="text-gray-300" />
       ) : (
-        <LightMode className="text-yellow-500" />
+        <LightModeOutlined className="text-yellow-500" />
       )}
     </IconButton>
   );

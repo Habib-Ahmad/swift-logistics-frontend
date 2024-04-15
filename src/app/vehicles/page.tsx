@@ -1,7 +1,7 @@
-import { AddVehicle, VehicleTable } from "@/components";
 import { Box, Typography } from "@mui/material";
+import { AddVehicle, VehicleTable } from "@/components";
 
-const Vehicles = () => {
+const Vehicles: React.FC = () => {
   return (
     <Box>
       <Box className="flex items-center">

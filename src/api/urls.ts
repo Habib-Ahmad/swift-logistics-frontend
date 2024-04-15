@@ -9,11 +9,13 @@ export const urls = {
     update: "/vehicles/update",
     getAll: "/vehicles/getAll",
     getById: "/vehicles/getById",
+    delete: "/vehicles/delete",
   },
   drivers: {
     register: "/drivers/register",
     update: "/drivers/update",
     getAll: "/drivers/getAll",
     getById: "/drivers/getById",
+    delete: "/drivers/delete",
   },
 };
