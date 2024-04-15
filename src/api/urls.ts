@@ -10,4 +10,10 @@ export const urls = {
     getAll: "/vehicles/getAll",
     getById: "/vehicles/getById",
   },
+  drivers: {
+    register: "/drivers/register",
+    update: "/drivers/update",
+    getAll: "/drivers/getAll",
+    getById: "/drivers/getById",
+  },
 };

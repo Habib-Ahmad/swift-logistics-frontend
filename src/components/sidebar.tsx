@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "next-themes";
@@ -18,6 +18,7 @@ import {
 import { Box, Typography } from "@mui/material";
 import logo from "@/assets/logo.svg";
 import logoDark from "@/assets/logo-dark.svg";
+import { usePathname } from "next/navigation";
 
 const mainMenu = [
   {
@@ -34,7 +35,6 @@ const mainMenu = [
     name: "Drivers",
     to: "/drivers",
     icon: <Person />,
-    comingSoon: true,
   },
   {
     name: "Customers",
@@ -87,6 +87,14 @@ const Sidebar: React.FC = () => {
   const currentTheme = theme === "system" ? systemTheme : theme;
 
   const [active, setActive] = useState("Dashboard");
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const array = [...mainMenu, ...internalTools];
+    const item = array.find((item) => item.to === pathname);
+    item && setActive(item?.name);
+  }, [pathname]);
 
   return (
     <Box className="flex-1 pb-4 h-dvh max-h-dvh overflow-y-scroll no-scrollbar">

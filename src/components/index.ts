@@ -10,3 +10,7 @@ export { default as VehicleTable } from "./vehicle-table";
 export { default as VehicleDetails } from "./vehicle-details";
 export { default as EditVehicle } from "./edit-vehicle";
 export { default as AddVehicle } from "./add-vehicle";
+export { default as DriverTable } from "./driver-table";
+export { default as DriverDetails } from "./driver-details";
+export { default as EditDriver } from "./edit-driver";
+export { default as AddDriver } from "./add-driver";
