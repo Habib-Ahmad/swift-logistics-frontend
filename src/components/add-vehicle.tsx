@@ -88,7 +88,7 @@ const AddVehicle: React.FC = () => {
             <Form onSubmit={handleSubmit}>
               <Typography variant="h2">Add Vehicle</Typography>
 
-              <Box className="grid grid-cols-3 gap-6 my-6">
+              <Box className="grid sm:grid-cols-3 gap-6 my-6">
                 <TextField
                   name="brand"
                   label="Brand"

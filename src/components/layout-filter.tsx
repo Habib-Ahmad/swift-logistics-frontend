@@ -32,7 +32,7 @@ const LayoutFilter: React.FC<IProps> = ({ children }) => {
           ) : (
             <Box className="flex">
               <Sidebar />
-              <Box className="flex-[4] 2xl:flex-[5] px-[5vw] 2xl:px-[10vw] py-5 bg-slate-100 dark:bg-slate-900 min-h-[100vh] max-h-[100vh] overflow-y-scroll">
+              <Box className="flex-[4] 2xl:flex-[5] px-[5vw] py-5 bg-slate-100 dark:bg-slate-900 min-h-[100vh] max-h-[100vh] overflow-y-scroll">
                 <Topbar />
                 {children}
               </Box>

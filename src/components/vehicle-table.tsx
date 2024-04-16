@@ -50,7 +50,14 @@ const VehicleTable: React.FC = () => {
       <Table rows={data} columns={columns} onRowClick={handleRowClick} />
 
       <CustomModal open={modalOpen} onClose={handleCloseModal}>
-        {selectedVehicle ? <VehicleDetails data={selectedVehicle} /> : <></>}
+        {selectedVehicle ? (
+          <VehicleDetails
+            data={selectedVehicle}
+            handleCloseModal={handleCloseModal}
+          />
+        ) : (
+          <></>
+        )}
       </CustomModal>
     </>
   );

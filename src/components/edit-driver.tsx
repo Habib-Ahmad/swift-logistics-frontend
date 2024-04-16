@@ -1,5 +1,5 @@
 "use client";
-import { updateDriver } from "@/api";
+import { deleteDriver, updateDriver } from "@/api";
 import { IDriver } from "@/interfaces";
 import {
   Box,
@@ -14,10 +14,12 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Formik, Form } from "formik";
 import moment from "moment";
+import Swal from "sweetalert2";
 import * as Yup from "yup";
 
 interface IProps {
   data: IDriver;
+  handleCloseModal: () => void;
 }
 
 const statusOptions = [
@@ -27,10 +29,10 @@ const statusOptions = [
   { label: "Terminated", value: "ternimated" },
 ];
 
-const EditDriver: React.FC<IProps> = ({ data }) => {
+const EditDriver: React.FC<IProps> = ({ data, handleCloseModal }) => {
   const queryClient = useQueryClient();
 
-  const { mutateAsync, isPending, error, isSuccess } = useMutation({
+  const updateDriverMutation = useMutation({
     mutationKey: ["drivers", data.id],
     mutationFn: updateDriver,
     onSuccess: () => {
@@ -38,8 +40,38 @@ const EditDriver: React.FC<IProps> = ({ data }) => {
     },
   });
 
+  const deleteDriverMutation = useMutation({
+    mutationKey: ["drivers", data.id],
+    mutationFn: deleteDriver,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["drivers"], exact: true });
+    },
+  });
+
   const submit = async (values: IDriver) => {
-    mutateAsync(values);
+    updateDriverMutation.mutate(values);
+  };
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteDriverMutation.mutate(data.id);
+
+        Swal.fire({
+          title: "Deleted!",
+          text: "Vehicle deleted.",
+          icon: "success",
+        }).then(() => {
+          handleCloseModal();
+        });
+      }
+    });
   };
 
   return (
@@ -66,7 +98,7 @@ const EditDriver: React.FC<IProps> = ({ data }) => {
         setFieldValue,
       }) => (
         <Form onSubmit={handleSubmit}>
-          <Box className="grid grid-cols-2 gap-6 my-6">
+          <Box className="grid sm:grid-cols-2 gap-6 my-6">
             <TextField
               name="firstName"
               label="First Name"
@@ -156,7 +188,6 @@ const EditDriver: React.FC<IProps> = ({ data }) => {
               multiline
               minRows={4}
               fullWidth
-              className="[grid-column:1/3]"
               value={values.address}
               onChange={handleChange}
               error={touched.address && !!errors.address}
@@ -164,13 +195,13 @@ const EditDriver: React.FC<IProps> = ({ data }) => {
             />
           </Box>
 
-          {error && (
+          {updateDriverMutation.error && (
             <Typography className="text-center text-red-600 font-semibold mb-3">
-              {error.message}
+              {updateDriverMutation.error.message}
             </Typography>
           )}
 
-          {isSuccess && (
+          {updateDriverMutation.isSuccess && (
             <Typography className="text-center text-green-600 font-semibold mb-3">
               Driver updated successfully!
             </Typography>
@@ -179,13 +210,21 @@ const EditDriver: React.FC<IProps> = ({ data }) => {
           <Button
             type="submit"
             variant="contained"
-            className="block m-auto w-1/2"
+            className="block m-auto w-full sm:w-1/2"
           >
-            {isPending ? (
+            {updateDriverMutation.isPending ? (
               <CircularProgress size={25} className="text-white" />
             ) : (
               "Update"
             )}
+          </Button>
+
+          <Button
+            variant="contained"
+            className="block m-auto w-full sm:w-1/2 mt-3 bg-red-700"
+            onClick={handleDelete}
+          >
+            Delete
           </Button>
         </Form>
       )}

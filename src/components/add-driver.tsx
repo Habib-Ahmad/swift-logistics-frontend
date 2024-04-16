@@ -82,7 +82,7 @@ const AddDriver: React.FC = () => {
             <Form onSubmit={handleSubmit}>
               <Typography variant="h2">Add Driver</Typography>
 
-              <Box className="grid grid-cols-2 gap-6 my-6">
+              <Box className="grid sm:grid-cols-2 gap-6 my-6">
                 <TextField
                   name="firstName"
                   label="First Name"
@@ -154,7 +154,6 @@ const AddDriver: React.FC = () => {
                   multiline
                   minRows={4}
                   fullWidth
-                  className="[grid-column:1/3]"
                   value={values.address}
                   onChange={handleChange}
                   error={touched.address && !!errors.address}

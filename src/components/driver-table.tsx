@@ -56,7 +56,14 @@ const DriverTable: React.FC = () => {
       <Table rows={data} columns={columns} onRowClick={handleRowClick} />
 
       <CustomModal open={modalOpen} onClose={handleCloseModal}>
-        {selectedDriver ? <DriverDetails data={selectedDriver} /> : <></>}
+        {selectedDriver ? (
+          <DriverDetails
+            data={selectedDriver}
+            handleCloseModal={handleCloseModal}
+          />
+        ) : (
+          <></>
+        )}
       </CustomModal>
     </>
   );

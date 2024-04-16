@@ -5,9 +5,10 @@ import { CustomTabs, EditVehicle } from ".";
 
 interface IProps {
   data: IVehicle;
+  handleCloseModal: () => void;
 }
 
-const VehicleDetails: React.FC<IProps> = ({ data }) => {
+const VehicleDetails: React.FC<IProps> = ({ data, handleCloseModal }) => {
   const tabData = [
     {
       label: "Shipment Details",
@@ -21,7 +22,9 @@ const VehicleDetails: React.FC<IProps> = ({ data }) => {
     },
     {
       label: "Vehicle Details",
-      component: <EditVehicle data={data} />,
+      component: (
+        <EditVehicle data={data} handleCloseModal={handleCloseModal} />
+      ),
     },
   ];
 

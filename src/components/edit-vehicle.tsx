@@ -1,5 +1,5 @@
 "use client";
-import { updateVehicle } from "@/api";
+import { deleteVehicle, updateVehicle } from "@/api";
 import { IVehicle } from "@/interfaces";
 import {
   Box,
@@ -11,10 +11,12 @@ import {
 } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Formik, Form } from "formik";
+import Swal from "sweetalert2";
 import * as Yup from "yup";
 
 interface IProps {
   data: IVehicle;
+  handleCloseModal: () => void;
 }
 
 const statusOptions = [
@@ -35,10 +37,10 @@ const vehicleTypes = [
   { label: "Bike", value: "bike" },
 ];
 
-const EditVehicle: React.FC<IProps> = ({ data }) => {
+const EditVehicle: React.FC<IProps> = ({ data, handleCloseModal }) => {
   const queryClient = useQueryClient();
 
-  const { mutateAsync, isPending, error, isSuccess } = useMutation({
+  const updateVehicleMutation = useMutation({
     mutationKey: ["vehicles", data.id],
     mutationFn: updateVehicle,
     onSuccess: () => {
@@ -46,8 +48,38 @@ const EditVehicle: React.FC<IProps> = ({ data }) => {
     },
   });
 
+  const deleteVehicleMutation = useMutation({
+    mutationKey: ["vehicles", data.id],
+    mutationFn: deleteVehicle,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["vehicles"], exact: true });
+    },
+  });
+
   const submit = async (values: IVehicle) => {
-    mutateAsync(values);
+    updateVehicleMutation.mutate(values);
+  };
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteVehicleMutation.mutate(data.id);
+
+        Swal.fire({
+          title: "Deleted!",
+          text: "Vehicle deleted.",
+          icon: "success",
+        }).then(() => {
+          handleCloseModal();
+        });
+      }
+    });
   };
 
   return (
@@ -67,7 +99,7 @@ const EditVehicle: React.FC<IProps> = ({ data }) => {
     >
       {({ handleChange, handleSubmit, values, errors, touched }) => (
         <Form onSubmit={handleSubmit}>
-          <Box className="grid grid-cols-3 gap-6 mb-6">
+          <Box className="grid sm:grid-cols-3 gap-6 mb-10">
             <TextField
               name="brand"
               label="Brand"
@@ -180,13 +212,13 @@ const EditVehicle: React.FC<IProps> = ({ data }) => {
             </TextField>
           </Box>
 
-          {error && (
+          {updateVehicleMutation.error && (
             <Typography className="text-center text-red-600 font-semibold mb-3">
-              {error.message}
+              {updateVehicleMutation.error.message}
             </Typography>
           )}
 
-          {isSuccess && (
+          {updateVehicleMutation.isSuccess && (
             <Typography className="text-center text-green-600 font-semibold mb-3">
               Vehicle updated successfully!
             </Typography>
@@ -195,13 +227,21 @@ const EditVehicle: React.FC<IProps> = ({ data }) => {
           <Button
             type="submit"
             variant="contained"
-            className="block m-auto w-1/2"
+            className="block m-auto w-full sm:w-1/2"
           >
-            {isPending ? (
+            {updateVehicleMutation.isPending ? (
               <CircularProgress size={25} className="text-white" />
             ) : (
               "Update"
             )}
+          </Button>
+
+          <Button
+            variant="contained"
+            className="block m-auto w-full sm:w-1/2 mt-3 bg-red-700"
+            onClick={handleDelete}
+          >
+            Delete
           </Button>
         </Form>
       )}

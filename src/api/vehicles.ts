@@ -33,7 +33,7 @@ export const updateVehicle = async (payload: IVehicle) => {
 
 export const deleteVehicle = async (id: string) => {
   try {
-    const response = await api.delete(`${urls.vehicles.update}/${id}`);
+    const response = await api.delete(`${urls.vehicles.delete}/${id}`);
     return response.data;
   } catch (error) {
     throw new Error("Deletion failed");
