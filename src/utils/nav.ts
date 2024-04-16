@@ -2,9 +2,9 @@ import {
   AllInbox,
   Analytics,
   Dashboard,
+  Garage,
   LocalShipping,
   Payment,
-  People,
   Person,
   Receipt,
   Settings,
@@ -28,15 +28,14 @@ export const mainMenu = [
     icon: Person,
   },
   {
-    name: "Customers",
-    to: "/customers",
-    icon: People,
-    comingSoon: true,
-  },
-  {
     name: "Shipments",
     to: "/shipments",
     icon: AllInbox,
+  },
+  {
+    name: "Stations",
+    to: "/stations",
+    icon: Garage,
     comingSoon: true,
   },
 ];

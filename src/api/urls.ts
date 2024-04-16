@@ -18,4 +18,11 @@ export const urls = {
     getById: "/drivers/getById",
     delete: "/drivers/delete",
   },
+  stations: {
+    register: "/stations/register",
+    update: "/stations/update",
+    getAll: "/stations/getAll",
+    getById: "/stations/getById",
+    delete: "/stations/delete",
+  },
 };

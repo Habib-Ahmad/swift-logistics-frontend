@@ -7,6 +7,7 @@ interface IProps {
     label: string;
     component: React.ReactNode;
   }[];
+  large?: boolean;
 }
 
 interface TabPanelProps {
@@ -31,7 +32,7 @@ const CustomTabPanel = (props: TabPanelProps) => {
   );
 };
 
-const CustomTabs: React.FC<IProps> = ({ data }) => {
+const CustomTabs: React.FC<IProps> = ({ data, large }) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -40,15 +41,14 @@ const CustomTabs: React.FC<IProps> = ({ data }) => {
 
   return (
     <>
-      <Tabs value={value} onChange={handleChange}>
+      <Tabs value={value} onChange={handleChange} variant="scrollable">
         {data.map((tab, index) => (
           <Tab
             key={tab.label}
             label={tab.label}
             value={index}
-            className={`font-semibold capitalize dark:text-gray-300 text-gray-600 ${
-              value === index && "text-primary"
-            }`}
+            className={`font-semibold capitalize dark:text-gray-300 text-gray-600 
+            ${large && "text-lg mx-2"} ${value === index && "text-primary"}`}
           />
         ))}
       </Tabs>
