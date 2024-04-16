@@ -5,7 +5,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { getAllDrivers } from "@/api";
 import { IDriver } from "@/interfaces";
 import { useQuery } from "@tanstack/react-query";
-import { CustomModal, DriverDetails, Table } from ".";
+import { CustomModal, EditDriver, Table } from ".";
 
 const DriverTable: React.FC = () => {
   const [selectedDriver, setSelectedDriver] = useState<IDriver | null>(null);
@@ -57,10 +57,7 @@ const DriverTable: React.FC = () => {
 
       <CustomModal open={modalOpen} onClose={handleCloseModal}>
         {selectedDriver ? (
-          <DriverDetails
-            data={selectedDriver}
-            handleCloseModal={handleCloseModal}
-          />
+          <EditDriver data={data} handleCloseModal={handleCloseModal} />
         ) : (
           <></>
         )}

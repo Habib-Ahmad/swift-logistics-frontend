@@ -65,7 +65,7 @@ const EditDriver: React.FC<IProps> = ({ data, handleCloseModal }) => {
 
         Swal.fire({
           title: "Deleted!",
-          text: "Vehicle deleted.",
+          text: "Driver deleted.",
           icon: "success",
         }).then(() => {
           handleCloseModal();
@@ -75,160 +75,166 @@ const EditDriver: React.FC<IProps> = ({ data, handleCloseModal }) => {
   };
 
   return (
-    <Formik
-      initialValues={data}
-      validationSchema={Yup.object().shape({
-        firstName: Yup.string().required("This is a required field"),
-        lastName: Yup.string().required("This is a required field"),
-        email: Yup.string().required("This is a required field"),
-        phone: Yup.string().required("This is a required field"),
-        dob: Yup.string().required("This is a required field"),
-        address: Yup.string().required("This is a required field"),
-        status: Yup.string().required("This is a required field"),
-      })}
-      onSubmit={submit}
-      enableReinitialize
-    >
-      {({
-        handleChange,
-        handleSubmit,
-        values,
-        errors,
-        touched,
-        setFieldValue,
-      }) => (
-        <Form onSubmit={handleSubmit}>
-          <Box className="grid sm:grid-cols-2 gap-6 my-6">
-            <TextField
-              name="firstName"
-              label="First Name"
-              size="small"
-              fullWidth
-              value={values.firstName}
-              onChange={handleChange}
-              error={touched.firstName && !!errors.firstName}
-              helperText={touched.firstName && errors.firstName}
-            />
+    <Box>
+      <Typography component="h2" className="mb-3">
+        Driver Details
+      </Typography>
 
-            <TextField
-              name="lastName"
-              label="Last Name"
-              size="small"
-              fullWidth
-              value={values.lastName}
-              onChange={handleChange}
-              error={touched.lastName && !!errors.lastName}
-              helperText={touched.lastName && errors.lastName}
-            />
-
-            <TextField
-              name="email"
-              label="E-mail"
-              size="small"
-              fullWidth
-              value={values.email}
-              onChange={handleChange}
-              error={touched.email && !!errors.email}
-              helperText={touched.email && errors.email}
-            />
-
-            <LocalizationProvider dateAdapter={AdapterMoment}>
-              <DatePicker
-                name="dob"
-                value={moment(values.dob)}
-                onChange={(value) => {
-                  setFieldValue("dob", moment(value).toISOString());
-                }}
-                format="DD/MM/YYYY"
-                slotProps={{
-                  textField: {
-                    size: "small",
-                    label: "Date of Birth",
-                    error: touched.dob && !!errors.dob,
-                    helperText: touched.dob && errors.dob,
-                    fullWidth: true,
-                  },
-                }}
+      <Formik
+        initialValues={data}
+        validationSchema={Yup.object().shape({
+          firstName: Yup.string().required("This is a required field"),
+          lastName: Yup.string().required("This is a required field"),
+          email: Yup.string().required("This is a required field"),
+          phone: Yup.string().required("This is a required field"),
+          dob: Yup.string().required("This is a required field"),
+          address: Yup.string().required("This is a required field"),
+          status: Yup.string().required("This is a required field"),
+        })}
+        onSubmit={submit}
+        enableReinitialize
+      >
+        {({
+          handleChange,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+          setFieldValue,
+        }) => (
+          <Form onSubmit={handleSubmit}>
+            <Box className="grid sm:grid-cols-2 gap-6 my-6">
+              <TextField
+                name="firstName"
+                label="First Name"
+                size="small"
+                fullWidth
+                value={values.firstName}
+                onChange={handleChange}
+                error={touched.firstName && !!errors.firstName}
+                helperText={touched.firstName && errors.firstName}
               />
-            </LocalizationProvider>
 
-            <TextField
-              name="phone"
-              label="Phone"
-              size="small"
-              fullWidth
-              value={values.phone}
-              onChange={handleChange}
-              error={touched.phone && !!errors.phone}
-              helperText={touched.phone && errors.phone}
-            />
+              <TextField
+                name="lastName"
+                label="Last Name"
+                size="small"
+                fullWidth
+                value={values.lastName}
+                onChange={handleChange}
+                error={touched.lastName && !!errors.lastName}
+                helperText={touched.lastName && errors.lastName}
+              />
 
-            <TextField
-              name="status"
-              label="Status"
-              select
-              size="small"
-              fullWidth
-              value={values.status}
-              onChange={handleChange}
-              error={touched.status && !!errors.status}
-              helperText={touched.status && errors.status}
-            >
-              {statusOptions.map((status) => (
-                <MenuItem key={status.value} value={status.value}>
-                  {status.label}
-                </MenuItem>
-              ))}
-            </TextField>
+              <TextField
+                name="email"
+                label="E-mail"
+                size="small"
+                fullWidth
+                value={values.email}
+                onChange={handleChange}
+                error={touched.email && !!errors.email}
+                helperText={touched.email && errors.email}
+              />
 
-            <TextField
-              name="address"
-              label="Address"
-              size="small"
-              multiline
-              minRows={4}
-              fullWidth
-              value={values.address}
-              onChange={handleChange}
-              error={touched.address && !!errors.address}
-              helperText={touched.address && errors.address}
-            />
-          </Box>
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <DatePicker
+                  name="dob"
+                  value={moment(values.dob)}
+                  onChange={(value) => {
+                    setFieldValue("dob", moment(value).toISOString());
+                  }}
+                  format="DD/MM/YYYY"
+                  slotProps={{
+                    textField: {
+                      size: "small",
+                      label: "Date of Birth",
+                      error: touched.dob && !!errors.dob,
+                      helperText: touched.dob && errors.dob,
+                      fullWidth: true,
+                    },
+                  }}
+                />
+              </LocalizationProvider>
 
-          {updateDriverMutation.error && (
-            <Typography className="text-center text-red-600 font-semibold mb-3">
-              {updateDriverMutation.error.message}
-            </Typography>
-          )}
+              <TextField
+                name="phone"
+                label="Phone"
+                size="small"
+                fullWidth
+                value={values.phone}
+                onChange={handleChange}
+                error={touched.phone && !!errors.phone}
+                helperText={touched.phone && errors.phone}
+              />
 
-          {updateDriverMutation.isSuccess && (
-            <Typography className="text-center text-green-600 font-semibold mb-3">
-              Driver updated successfully!
-            </Typography>
-          )}
+              <TextField
+                name="status"
+                label="Status"
+                select
+                size="small"
+                fullWidth
+                value={values.status}
+                onChange={handleChange}
+                error={touched.status && !!errors.status}
+                helperText={touched.status && errors.status}
+              >
+                {statusOptions.map((status) => (
+                  <MenuItem key={status.value} value={status.value}>
+                    {status.label}
+                  </MenuItem>
+                ))}
+              </TextField>
 
-          <Button
-            type="submit"
-            variant="contained"
-            className="block m-auto w-full sm:w-1/2"
-          >
-            {updateDriverMutation.isPending ? (
-              <CircularProgress size={25} className="text-white" />
-            ) : (
-              "Update"
+              <TextField
+                name="address"
+                label="Address"
+                size="small"
+                multiline
+                minRows={4}
+                fullWidth
+                value={values.address}
+                onChange={handleChange}
+                error={touched.address && !!errors.address}
+                helperText={touched.address && errors.address}
+              />
+            </Box>
+
+            {updateDriverMutation.error && (
+              <Typography className="text-center text-red-600 font-semibold mb-3">
+                {updateDriverMutation.error.message}
+              </Typography>
             )}
-          </Button>
 
-          <Button
-            variant="contained"
-            className="block m-auto w-full sm:w-1/2 mt-3 bg-red-700"
-            onClick={handleDelete}
-          >
-            Delete
-          </Button>
-        </Form>
-      )}
-    </Formik>
+            {updateDriverMutation.isSuccess && (
+              <Typography className="text-center text-green-600 font-semibold mb-3">
+                Driver updated successfully!
+              </Typography>
+            )}
+
+            <Button
+              type="submit"
+              variant="contained"
+              className="block m-auto w-full sm:w-1/2"
+            >
+              {updateDriverMutation.isPending ? (
+                <CircularProgress size={25} className="text-white" />
+              ) : (
+                "Update"
+              )}
+            </Button>
+
+            <Button
+              variant="contained"
+              className="block m-auto w-full sm:w-1/2 mt-3 bg-red-700"
+              onClick={handleDelete}
+            >
+              Delete
+            </Button>
+          </Form>
+        )}
+      </Formik>
+    </Box>
   );
 };
 
