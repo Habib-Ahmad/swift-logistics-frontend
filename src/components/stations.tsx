@@ -45,7 +45,7 @@ const Stations: React.FC = () => {
     <Box>
       <AddStation />
 
-      {data.length ? (
+      {data?.length ? (
         <Table rows={data} columns={columns} onRowClick={handleRowClick} />
       ) : (
         <Typography className="text-center text-lg font-semibold mt-5">

@@ -5,3 +5,4 @@ export * from "./auth";
 export * from "./vehicles";
 export * from "./drivers";
 export * from "./stations";
+export * from "./shipments";

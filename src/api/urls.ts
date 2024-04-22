@@ -25,4 +25,11 @@ export const urls = {
     getById: "/stations/getById",
     delete: "/stations/delete",
   },
+  shipments: {
+    register: "/shipments/register",
+    update: "/shipments/update",
+    getAll: "/shipments/getAll",
+    getById: "/shipments/getById",
+    delete: "/shipments/delete",
+  },
 };

@@ -48,7 +48,7 @@ const CustomTabs: React.FC<IProps> = ({ data, large }) => {
             label={tab.label}
             value={index}
             className={`font-semibold capitalize dark:text-gray-300 text-gray-600 
-            ${large && "text-lg mx-2"} ${value === index && "text-primary"}`}
+            ${large && "text-md mx-2"} ${value === index && "text-primary"}`}
           />
         ))}
       </Tabs>

@@ -18,3 +18,6 @@ export { default as AddDriver } from "./add-driver";
 export { default as Stations } from "./stations";
 export { default as AddStation } from "./add-station";
 export { default as EditStation } from "./edit-station";
+export { default as Shipments } from "./shipments";
+export { default as AddShipment } from "./add-shipment";
+export { default as EditShipment } from "./edit-shipment";

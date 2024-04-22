@@ -1,5 +1,9 @@
 import { Box, Typography } from "@mui/material";
-import { CustomTabs, Stations } from "@/components";
+import {
+  CustomTabs,
+  Shipments as ShipmentsComponent,
+  Stations,
+} from "@/components";
 
 const tabData = [
   {
@@ -8,7 +12,7 @@ const tabData = [
   },
   {
     label: "Manage shipments",
-    component: <Box></Box>,
+    component: <ShipmentsComponent />,
   },
   {
     label: "Stations",

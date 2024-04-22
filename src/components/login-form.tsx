@@ -78,7 +78,11 @@ const LoginForm: React.FC = () => {
           )}
 
           <Button type="submit" variant="contained" fullWidth>
-            {isPending ? <CircularProgress size={25} /> : "Login"}
+            {isPending ? (
+              <CircularProgress className="text-white" size={25} />
+            ) : (
+              "Login"
+            )}
           </Button>
         </Form>
       )}

@@ -25,6 +25,8 @@ export const authReducer = (state: IAuthState, action: IAction) => {
         isAuthenticated: true,
       };
     case actions.LOGOUT:
+      store.removeAccessToken();
+      store.removeAccessExpiry();
       return initialState;
     default:
       return state;
