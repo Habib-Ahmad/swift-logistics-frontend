@@ -2,7 +2,7 @@ import {
   AllInbox,
   Analytics,
   Dashboard,
-  Garage,
+  Inventory,
   LocalShipping,
   Payment,
   Person,
@@ -33,10 +33,9 @@ export const mainMenu = [
     icon: AllInbox,
   },
   {
-    name: "Stations",
-    to: "/stations",
-    icon: Garage,
-    comingSoon: true,
+    name: "Orders",
+    to: "/orders",
+    icon: Inventory,
   },
 ];
 

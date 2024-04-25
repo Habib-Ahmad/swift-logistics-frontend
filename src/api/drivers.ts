@@ -6,7 +6,7 @@ export const getAllDrivers = async () => {
     const response = await api.get(urls.drivers.getAll);
     return response.data.drivers;
   } catch (error) {
-    throw new Error("Failed to fetch driver");
+    throw new Error("Failed to fetch drivers");
   }
 };
 

@@ -6,7 +6,7 @@ export const getAllStations = async () => {
     const response = await api.get(urls.stations.getAll);
     return response.data.stations;
   } catch (error) {
-    throw new Error("Failed to fetch station");
+    throw new Error("Failed to fetch stations");
   }
 };
 

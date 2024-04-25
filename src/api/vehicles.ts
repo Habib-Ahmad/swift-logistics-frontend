@@ -6,7 +6,7 @@ export const getAllVehicles = async () => {
     const response = await api.get(urls.vehicles.getAll);
     return response.data.vehicles;
   } catch (error) {
-    throw new Error("Failed to fetch user");
+    throw new Error("Failed to fetch vehicles");
   }
 };
 
