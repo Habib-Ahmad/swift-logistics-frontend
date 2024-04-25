@@ -32,4 +32,11 @@ export const urls = {
     getById: "/shipments/getById",
     delete: "/shipments/delete",
   },
+  orders: {
+    register: "/orders/register",
+    update: "/orders/update",
+    getAll: "/orders/getAll",
+    getById: "/orders/getById",
+    delete: "/orders/delete",
+  },
 };

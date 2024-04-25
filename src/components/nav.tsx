@@ -25,7 +25,7 @@ const Nav: React.FC = () => {
         <Box
           key={item.name}
           component={Link}
-          href={item.comingSoon ? "" : item.to}
+          href={item.to}
           className={`flex items-center px-4 py-3 my-1 hover:bg-primary hover:text-white cursor-pointer rounded-full transition duration-100 ${
             active === item.name && "bg-primary !text-white"
           }`}
