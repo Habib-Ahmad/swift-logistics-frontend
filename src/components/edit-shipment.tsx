@@ -97,7 +97,17 @@ const EditShipment: React.FC<IProps> = ({ data, handleCloseModal }) => {
 
   return (
     <Formik
-      initialValues={data}
+      initialValues={{
+        ...data,
+        startPoint:
+          typeof data.startPoint === "object"
+            ? data.startPoint.id
+            : data.startPoint,
+        destination:
+          typeof data.destination === "object"
+            ? data.destination.id
+            : data.destination,
+      }}
       validationSchema={Yup.object().shape({
         name: Yup.string().required("Name is required"),
         startPoint: Yup.string().required("Start Point is required"),
@@ -127,7 +137,7 @@ const EditShipment: React.FC<IProps> = ({ data, handleCloseModal }) => {
                 setFieldValue("startPoint", e.target.value);
 
                 const startName = getStationName(e.target.value);
-                const destName = getStationName(values.destination);
+                const destName = getStationName(values.destination as string);
                 setFieldValue("name", `${startName}-${destName}`);
               }}
               error={touched.startPoint && !!errors.startPoint}
@@ -150,7 +160,7 @@ const EditShipment: React.FC<IProps> = ({ data, handleCloseModal }) => {
               onChange={(e) => {
                 setFieldValue("destination", e.target.value);
 
-                const startName = getStationName(values.startPoint);
+                const startName = getStationName(values.startPoint as string);
                 const destName = getStationName(e.target.value);
                 setFieldValue("name", `${startName}-${destName}`);
               }}
@@ -209,6 +219,25 @@ const EditShipment: React.FC<IProps> = ({ data, handleCloseModal }) => {
                 touched.schedule?.interval && errors.schedule?.interval
               }
             />
+
+            {values.schedule.frequency === "daily" && (
+              <TextField
+                name="schedule.timesPerDay"
+                label="How many times per day"
+                size="small"
+                type="number"
+                fullWidth
+                value={values.schedule.timesPerDay}
+                onChange={handleChange}
+                error={
+                  touched.schedule?.timesPerDay &&
+                  !!errors.schedule?.timesPerDay
+                }
+                helperText={
+                  touched.schedule?.timesPerDay && errors.schedule?.timesPerDay
+                }
+              />
+            )}
 
             {values.schedule.frequency === "weekly" && (
               <TextField

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import { IShipment, IStation } from "@/interfaces";
+import { IShipment } from "@/interfaces";
 import { useQuery } from "@tanstack/react-query";
 import { getAllShipments, getAllStations } from "@/api";
 import { AddShipment, CustomModal, EditShipment, Table } from ".";
@@ -18,51 +18,50 @@ const Shipments: React.FC = () => {
     queryFn: getAllShipments,
   });
 
-  const { data: stationData, isPending: isStationDataPending } = useQuery<
-    IStation[]
-  >({
-    queryKey: ["stations"],
-    queryFn: getAllStations,
-  });
-
   const columns: GridColDef<IShipment>[] = [
     {
       field: "id",
       headerName: "S/N",
-      width: 80,
+      width: 50,
       renderCell: (params) => params.api.getAllRowIds().indexOf(params?.id) + 1,
     },
-    { field: "name", headerName: "Name", flex: 1 },
+    { field: "name", headerName: "Name", flex: 0.8 },
     {
       field: "startPoint",
       headerName: "Start Point",
       flex: 1,
-      renderCell: (params) => {
-        const id = params.row.startPoint;
-        const name = stationData?.find((station) => station.id === id)?.name;
-        return name;
-      },
+      renderCell: (params) =>
+        typeof params.row.startPoint === "string"
+          ? params.row.startPoint
+          : `${params.row.startPoint.name}, ${params.row.startPoint.state}`,
     },
     {
       field: "destination",
       headerName: "Destination",
       flex: 1,
-      renderCell: (params) => {
-        const id = params.row.destination;
-        const name = stationData?.find((station) => station.id === id)?.name;
-        return name;
-      },
+      renderCell: (params) =>
+        typeof params.row.destination === "string"
+          ? params.row.destination
+          : `${params.row.destination.name}, ${params.row.destination.state}`,
     },
     {
       field: "schedule",
       headerName: "Schedule",
       flex: 1,
       renderCell: (params) => {
-        let { frequency, interval, dayOfWeek } = params.row.schedule;
+        let { frequency, interval, dayOfWeek, timesPerDay } =
+          params.row.schedule;
 
         if (frequency === "daily") {
           if (interval > 1) {
-            return `Every ${interval} days`;
+            if (!timesPerDay || timesPerDay <= 1) {
+              return `Every ${interval} days`;
+            } else {
+              return `Every ${interval} days, ${timesPerDay} times a day`;
+            }
+          }
+          if (timesPerDay && timesPerDay > 1) {
+            return `${timesPerDay} times a day`;
           }
           return "Everyday";
         }
@@ -82,7 +81,7 @@ const Shipments: React.FC = () => {
         return "";
       },
     },
-    { field: "status", headerName: "Status", flex: 1 },
+    { field: "status", headerName: "Status", flex: 0.4 },
   ];
 
   const handleRowClick = (params: any) => {
@@ -95,7 +94,7 @@ const Shipments: React.FC = () => {
     setSelectedShipment(null);
   };
 
-  if (isPending || isStationDataPending) {
+  if (isPending) {
     return <CircularProgress className="block m-auto mt-10" />;
   }
 

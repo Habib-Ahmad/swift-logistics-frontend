@@ -1,4 +1,4 @@
-import { IShipment } from "@/interfaces";
+import { ICreateShipment, IShipment } from "@/interfaces";
 import { api, urls } from ".";
 
 export const getAllShipments = async () => {
@@ -6,11 +6,11 @@ export const getAllShipments = async () => {
     const response = await api.get(urls.shipments.getAll);
     return response.data.shipments;
   } catch (error) {
-    throw new Error("Failed to fetch station");
+    throw new Error("Failed to fetch shipments");
   }
 };
 
-export const addShipment = async (payload: IShipment) => {
+export const addShipment = async (payload: ICreateShipment) => {
   try {
     const response = await api.post(urls.shipments.register, payload);
     return response.data;

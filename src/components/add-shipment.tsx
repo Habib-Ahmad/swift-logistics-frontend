@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { AddBox } from "@mui/icons-material";
 import {
+  Autocomplete,
   Box,
   Button,
   CircularProgress,
@@ -9,9 +10,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { addShipment, getAllStations } from "@/api";
+import {
+  addShipment,
+  getAllDrivers,
+  getAllStations,
+  getAllVehicles,
+} from "@/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { IShipment, IStation } from "@/interfaces";
+import { ICreateShipment, IDriver, IStation, IVehicle } from "@/interfaces";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { CustomModal } from ".";
@@ -38,6 +44,18 @@ const AddShipment: React.FC = () => {
     staleTime: 1000 * 60 * 10,
   });
 
+  const { data: driversData, isPending: isDriversPending } = useQuery({
+    queryKey: ["drivers"],
+    queryFn: getAllDrivers,
+    staleTime: 1000 * 60 * 10,
+  });
+
+  const { data: vehiclesData, isPending: isVehiclesPending } = useQuery({
+    queryKey: ["vehicles"],
+    queryFn: getAllVehicles,
+    staleTime: 1000 * 60 * 10,
+  });
+
   const { mutate, isPending, error, isSuccess } = useMutation({
     mutationFn: addShipment,
     onSuccess: () => {
@@ -53,7 +71,7 @@ const AddShipment: React.FC = () => {
     setModalOpen(false);
   };
 
-  const submit = async (values: IShipment) => {
+  const submit = async (values: ICreateShipment) => {
     mutate(values);
   };
 
@@ -68,7 +86,7 @@ const AddShipment: React.FC = () => {
     return removeStationSuffix(name);
   };
 
-  if (isStationsPending) {
+  if (isStationsPending || isDriversPending || isVehiclesPending) {
     return <CircularProgress className="block m-auto mt-10" />;
   }
 
@@ -86,15 +104,66 @@ const AddShipment: React.FC = () => {
             startPoint: "",
             destination: "",
             schedule: {
-              frequency: "daily",
-              interval: 1,
+              frequency: "",
+              interval: null,
+              dayOfWeek: "",
+              timesPerDay: null,
+              dayOfMonth: null,
             },
+            vehicleId: null,
+            driverId: null,
             status: "active",
           }}
           validationSchema={Yup.object().shape({
-            name: Yup.string().required("Name is required"),
-            startPoint: Yup.string().required("Start Point is required"),
-            destination: Yup.string().required("Destination is required"),
+            name: Yup.string().required("This field is required"),
+            startPoint: Yup.string().required("This field is required"),
+            destination: Yup.string().required("This field is required"),
+
+            schedule: Yup.object().shape({
+              frequency: Yup.string()
+                .required("Frequency is required")
+                .oneOf(["daily", "weekly", "monthly"]),
+              interval: Yup.number()
+                .required("This field is required")
+                .positive("Interval must be a positive number")
+                .integer("Interval must be an integer"),
+              timesPerDay: Yup.number().when("frequency", {
+                is: "daily",
+                then: () =>
+                  Yup.number()
+                    .required("This field is required")
+                    .positive("Times Per Day must be a positive number"),
+                otherwise: () => Yup.number().notRequired(),
+              }),
+              dayOfWeek: Yup.string().when("frequency", {
+                is: "weekly",
+                then: () =>
+                  Yup.string()
+                    .required("Day of Week is required")
+                    .oneOf([
+                      "monday",
+                      "tuesday",
+                      "wednesday",
+                      "thursday",
+                      "friday",
+                      "saturday",
+                      "sunday",
+                    ]),
+                otherwise: () => Yup.string().notRequired(),
+              }),
+              dayOfMonth: Yup.number().when("frequency", {
+                is: "monthly",
+                then: () =>
+                  Yup.number()
+                    .required("Day of Month is required")
+                    .min(1, "Day of Month must be between 1 and 31")
+                    .max(31, "Day of Month must be between 1 and 31"),
+                otherwise: () => Yup.number().notRequired(),
+              }),
+            }),
+            status: Yup.string()
+              .required("Status is required")
+              .oneOf(["active", "inactive"]),
           })}
           onSubmit={submit}
         >
@@ -121,7 +190,9 @@ const AddShipment: React.FC = () => {
                     setFieldValue("startPoint", e.target.value);
 
                     const startName = getStationName(e.target.value);
-                    const destName = getStationName(values.destination);
+                    const destName = getStationName(
+                      values.destination as string
+                    );
                     setFieldValue("name", `${startName}-${destName}`);
                   }}
                   error={touched.startPoint && !!errors.startPoint}
@@ -144,7 +215,9 @@ const AddShipment: React.FC = () => {
                   onChange={(e) => {
                     setFieldValue("destination", e.target.value);
 
-                    const startName = getStationName(values.startPoint);
+                    const startName = getStationName(
+                      values.startPoint as string
+                    );
                     const destName = getStationName(e.target.value);
                     setFieldValue("name", `${startName}-${destName}`);
                   }}
@@ -196,7 +269,7 @@ const AddShipment: React.FC = () => {
                   size="small"
                   type="number"
                   fullWidth
-                  value={values.schedule?.interval}
+                  value={values.schedule.interval || ""}
                   onChange={handleChange}
                   error={
                     touched.schedule?.interval && !!errors.schedule?.interval
@@ -205,6 +278,26 @@ const AddShipment: React.FC = () => {
                     touched.schedule?.interval && errors.schedule?.interval
                   }
                 />
+
+                {values.schedule.frequency === "daily" && (
+                  <TextField
+                    name="schedule.timesPerDay"
+                    label="How many times per day"
+                    size="small"
+                    type="number"
+                    fullWidth
+                    value={values.schedule.timesPerDay || ""}
+                    onChange={handleChange}
+                    error={
+                      touched.schedule?.timesPerDay &&
+                      !!errors.schedule?.timesPerDay
+                    }
+                    helperText={
+                      touched.schedule?.timesPerDay &&
+                      errors.schedule?.timesPerDay
+                    }
+                  />
+                )}
 
                 {values.schedule.frequency === "weekly" && (
                   <TextField
@@ -230,6 +323,74 @@ const AddShipment: React.FC = () => {
                     ))}
                   </TextField>
                 )}
+
+                {values.schedule.frequency === "monthly" && (
+                  <TextField
+                    name="schedule.dayOfMonth"
+                    label="Day of the Month"
+                    size="small"
+                    type="number"
+                    fullWidth
+                    value={values.schedule.dayOfMonth || ""}
+                    onChange={handleChange}
+                    error={
+                      touched.schedule?.dayOfMonth &&
+                      !!errors.schedule?.dayOfMonth
+                    }
+                    helperText={
+                      touched.schedule?.dayOfMonth &&
+                      errors.schedule?.dayOfMonth
+                    }
+                  />
+                )}
+
+                <Autocomplete
+                  options={driversData}
+                  getOptionLabel={(driver: IDriver) =>
+                    `${driver.firstName} ${driver.lastName}`
+                  }
+                  value={
+                    driversData.find(
+                      (driver: IDriver) => driver.id === values.driverId
+                    ) || null
+                  }
+                  onChange={(e, newValue) => {
+                    setFieldValue("driverId", newValue?.id);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Driver"
+                      size="small"
+                      error={touched.driverId && !!errors.driverId}
+                      helperText={touched.driverId && errors.driverId}
+                    />
+                  )}
+                />
+
+                <Autocomplete
+                  options={vehiclesData}
+                  getOptionLabel={(vehicle: IVehicle) =>
+                    `${vehicle.brand} ${vehicle.carModel} - ${vehicle.registrationNumber}`
+                  }
+                  value={
+                    vehiclesData.find(
+                      (vehicle: IVehicle) => vehicle.id === values.vehicleId
+                    ) || null
+                  }
+                  onChange={(e, newValue) => {
+                    setFieldValue("vehicleId", newValue?.id);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Vehicle"
+                      size="small"
+                      error={touched.vehicleId && !!errors.vehicleId}
+                      helperText={touched.vehicleId && errors.vehicleId}
+                    />
+                  )}
+                />
               </Box>
 
               {error && (
