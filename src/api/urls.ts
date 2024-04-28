@@ -32,6 +32,13 @@ export const urls = {
     getById: "/shipments/getById",
     delete: "/shipments/delete",
   },
+  shipmentInstances: {
+    register: "/shipmentInstances/register",
+    update: "/shipmentInstances/update",
+    getAll: "/shipmentInstances/getAll",
+    getById: "/shipmentInstances/getById",
+    delete: "/shipmentInstances/delete",
+  },
   orders: {
     register: "/orders/register",
     update: "/orders/update",

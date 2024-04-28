@@ -25,3 +25,5 @@ export { default as AddOrder } from "./add-order";
 export { default as OrderTable } from "./order-table";
 export { default as OrderDetails } from "./order-details";
 export { default as EditOrder } from "./edit-order";
+export { default as ShipmentInstances } from "./shipment-instances";
+export { default as EditShipmentInstance } from "./edit-shipment-instance";

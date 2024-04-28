@@ -4,4 +4,5 @@ export * from "./vehicle";
 export * from "./driver";
 export * from "./station";
 export * from "./shipment";
+export * from "./shipment-instance";
 export * from "./order";
