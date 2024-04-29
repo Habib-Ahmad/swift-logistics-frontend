@@ -24,6 +24,10 @@ const days = [
   "saturday",
   "sunday",
 ];
+const statusOptions = [
+  { label: "Active", value: "active" },
+  { label: "Inactive", value: "inactive" },
+];
 
 interface IProps {
   data: IShipment;
@@ -262,6 +266,42 @@ const EditShipment: React.FC<IProps> = ({ data, handleCloseModal }) => {
                 ))}
               </TextField>
             )}
+
+            {values.schedule.frequency === "monthly" && (
+              <TextField
+                name="schedule.dayOfMonth"
+                label="Day of the Month"
+                size="small"
+                type="number"
+                fullWidth
+                value={values.schedule.dayOfMonth || ""}
+                onChange={handleChange}
+                error={
+                  touched.schedule?.dayOfMonth && !!errors.schedule?.dayOfMonth
+                }
+                helperText={
+                  touched.schedule?.dayOfMonth && errors.schedule?.dayOfMonth
+                }
+              />
+            )}
+
+            <TextField
+              name="status"
+              label="Status"
+              select
+              size="small"
+              fullWidth
+              value={values.status}
+              onChange={handleChange}
+              error={touched.status && !!errors.status}
+              helperText={touched.status && errors.status}
+            >
+              {statusOptions.map((status) => (
+                <MenuItem key={status.value} value={status.value}>
+                  {status.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </Box>
 
           {updateShipmentMutation.error && (

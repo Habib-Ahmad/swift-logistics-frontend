@@ -4,8 +4,15 @@ import { Box, CircularProgress, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { IShipment } from "@/interfaces";
 import { useQuery } from "@tanstack/react-query";
-import { getAllShipments, getAllStations } from "@/api";
-import { AddShipment, CustomModal, EditShipment, Table } from ".";
+import { getAllShipments } from "@/api";
+import {
+  AddShipment,
+  CustomModal,
+  EditShipment,
+  Table,
+  renderFailure,
+  renderSuccess,
+} from ".";
 
 const Shipments: React.FC = () => {
   const [selectedShipment, setSelectedShipment] = useState<IShipment | null>(
@@ -81,7 +88,17 @@ const Shipments: React.FC = () => {
         return "";
       },
     },
-    { field: "status", headerName: "Status", flex: 0.4 },
+    {
+      field: "status",
+      headerName: "Status",
+      flex: 0.4,
+      renderCell: (params) => {
+        const status = params.row.status;
+        if (status === "active") return renderSuccess(status);
+
+        return renderFailure(status);
+      },
+    },
   ];
 
   const handleRowClick = (params: any) => {
