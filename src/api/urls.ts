@@ -46,4 +46,7 @@ export const urls = {
     getById: "/orders/getById",
     delete: "/orders/delete",
   },
+  statistics: {
+    getAll: "/statistics/getAll",
+  },
 };

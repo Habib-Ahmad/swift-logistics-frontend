@@ -8,3 +8,4 @@ export * from "./stations";
 export * from "./shipments";
 export * from "./shipment-instances";
 export * from "./orders";
+export * from "./statistics";

@@ -27,5 +27,7 @@ export { default as OrderDetails } from "./order-details";
 export { default as EditOrder } from "./edit-order";
 export { default as ShipmentInstances } from "./shipment-instances";
 export { default as EditShipmentInstance } from "./edit-shipment-instance";
+export { default as Statistics } from "./statistics";
+export { default as Card } from "./card";
 
 export * from "./render-status";

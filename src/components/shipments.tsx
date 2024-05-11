@@ -14,7 +14,11 @@ import {
   renderSuccess,
 } from ".";
 
-const Shipments: React.FC = () => {
+interface IProps {
+  showCreateButton?: boolean;
+}
+
+const Shipments: React.FC<IProps> = ({ showCreateButton = true }) => {
   const [selectedShipment, setSelectedShipment] = useState<IShipment | null>(
     null
   );
@@ -117,7 +121,7 @@ const Shipments: React.FC = () => {
 
   return (
     <Box>
-      <AddShipment />
+      {showCreateButton && <AddShipment />}
 
       {data?.length ? (
         <Table rows={data} columns={columns} onRowClick={handleRowClick} />
