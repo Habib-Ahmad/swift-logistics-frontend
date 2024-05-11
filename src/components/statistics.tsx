@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { DirectionsCar, LocalShipping, TwoWheeler } from "@mui/icons-material";
 import {
   Area,
@@ -25,8 +25,16 @@ const Statistics = () => {
     queryFn: getStatistics,
   });
 
-  if (isPending || !data) {
-    return <Box>Loading...</Box>;
+  if (isPending) {
+    return <CircularProgress />;
+  }
+
+  if (!data) {
+    return (
+      <Typography variant="h1" className="text-center">
+        Unable to load statistics
+      </Typography>
+    );
   }
 
   const { drivers, vehicles, shipments, orders } = data;
@@ -119,7 +127,7 @@ const Statistics = () => {
         </Box>
       </Box>
 
-      <Box className="shadow-md rounded-md w-full h-96 p-10 bg-white dark:bg-gray-800">
+      <Box className="mt-10 shadow-md rounded-md w-full h-96 p-10 bg-white dark:bg-gray-800">
         <Typography className="font-semibold">Shipped Orders</Typography>
 
         <ResponsiveContainer>

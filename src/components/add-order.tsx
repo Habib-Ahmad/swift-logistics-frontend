@@ -17,6 +17,8 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { CustomModal } from ".";
 
+const RATE = 3000;
+
 const AddOrder: React.FC = () => {
   const queryClient = useQueryClient();
 
@@ -74,6 +76,7 @@ const AddOrder: React.FC = () => {
             },
             transactionId: "",
             weight: 0,
+            price: 0,
             description: "",
             shipmentId: "",
           }}
@@ -97,7 +100,14 @@ const AddOrder: React.FC = () => {
           onSubmit={submit}
           enableReinitialize
         >
-          {({ handleChange, handleSubmit, values, errors, touched }) => (
+          {({
+            handleChange,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+            setFieldValue,
+          }) => (
             <Form onSubmit={handleSubmit}>
               <Typography variant="h2">Add Order</Typography>
 
@@ -220,9 +230,25 @@ const AddOrder: React.FC = () => {
                   type="number"
                   fullWidth
                   value={values.weight || ""}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const price = (Number(e.target.value) * RATE).toFixed(2);
+                    setFieldValue("weight", e.target.value);
+                    setFieldValue("price", price);
+                  }}
                   error={touched.weight && !!errors.weight}
                   helperText={touched.weight && errors.weight}
+                />
+
+                <TextField
+                  name="price"
+                  label="Price (₦)"
+                  size="small"
+                  type="number"
+                  fullWidth
+                  value={values.price || ""}
+                  onChange={handleChange}
+                  error={touched.price && !!errors.price}
+                  helperText={touched.price && errors.price}
                 />
               </Box>
 

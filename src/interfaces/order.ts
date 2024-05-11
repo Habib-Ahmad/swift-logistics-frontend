@@ -11,6 +11,7 @@ export interface IOrder {
   };
   transactionId: string;
   weight: number;
+  price: number;
   description: string;
   shipmentHistory: string[];
   deliveryHistory: string[];
@@ -29,6 +30,7 @@ export interface ICreateOrder {
   };
   transactionId: string;
   weight: number;
+  price: number;
   description: string;
   shipmentId: string;
 }
