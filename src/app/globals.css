@@ -40,6 +40,12 @@ a {
   }
 }
 
+.bg-login {
+  background: url("../assets/background.png"), #000;
+  background-position: center;
+  background-size: cover;
+}
+
 @layer utilities {
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {

@@ -18,6 +18,7 @@ import {
 } from "recharts";
 import { getStatistics } from "@/api";
 import { Card } from "@/components";
+import { ordersOverTime, popularDestinations } from "@/utils";
 
 const Statistics = () => {
   const { data, isPending } = useQuery({
@@ -39,7 +40,7 @@ const Statistics = () => {
 
   const { drivers, vehicles, shipments, orders } = data;
 
-  const COLORS = ["red", "blue", "green", "purple", "brown"];
+  const COLORS = ["#ef6e6e", "#4798e8", "#22c6ab", "#ffbe3c"];
 
   return (
     <Box className="mt-4">
@@ -108,15 +109,14 @@ const Statistics = () => {
           <ResponsiveContainer>
             <PieChart>
               <Pie
-                data={shipments.popularDestinations}
-                innerRadius={80}
+                data={popularDestinations}
                 outerRadius={120}
                 fill="#8884d8"
                 paddingAngle={0}
                 dataKey="count"
                 legendType="circle"
               >
-                {shipments.popularDestinations.map((_: any, index: number) => (
+                {popularDestinations.map((_: any, index: number) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index]} />
                 ))}
               </Pie>
@@ -132,7 +132,7 @@ const Statistics = () => {
 
         <ResponsiveContainer>
           <AreaChart
-            data={orders.ordersOverTime}
+            data={ordersOverTime}
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
           >
             <defs>
@@ -141,8 +141,8 @@ const Statistics = () => {
                 <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <XAxis dataKey="count" />
-            <YAxis />
+            <XAxis dataKey="date" />
+            <YAxis dataKey="count" />
             <Tooltip />
             <Area
               type="monotone"

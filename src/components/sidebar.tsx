@@ -9,7 +9,9 @@ const Sidebar: React.FC = () => {
         display: { xs: "none", md: "block" },
       }}
     >
-      <Logo />
+      <Box className="flex w-min md:mx-auto md:mt-4 md:mb-8">
+        <Logo />
+      </Box>
 
       <Nav />
     </Box>

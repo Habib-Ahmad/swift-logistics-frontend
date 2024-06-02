@@ -1,11 +1,17 @@
 "use client";
-import { createContext, useContext, useEffect, useReducer } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useReducer,
+} from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { authReducer, initialState } from "./reducer";
 import { IAuthProviderProps, IAuthContextValue } from "./interfaces";
 import actions from "./actions";
 import { useQuery } from "@tanstack/react-query";
-import { store } from "@/utils";
+import { confirmToken, store } from "@/utils";
 import { api, urls } from "@/api";
 import { IAuth, IUser } from "@/interfaces";
 
@@ -19,16 +25,28 @@ const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   const token = store.getAccessToken();
   const isAuthenticated = !!token;
 
+  const isTokenValid = useCallback(async () => {
+    return await confirmToken(token);
+  }, [token]);
+
   useEffect(() => {
+    if (!isTokenValid && pathname !== "/login") {
+      console.log("ME 1!");
+      router.push("/login");
+      return;
+    }
+
     if (!isAuthenticated && pathname !== "/login") {
+      console.log("ME 2!");
       router.push("/login");
     }
-  }, [isAuthenticated, pathname, router]);
+  }, [isAuthenticated, isTokenValid, pathname, router]);
 
   useQuery({
     queryKey: ["user"],
     queryFn: async () => {
       try {
+        if (!isAuthenticated) return;
         const response = await api.get(urls.auth.getUser);
         setUser(response.data.user);
         return response.data;

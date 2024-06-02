@@ -1,12 +1,21 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import {
+  Button,
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { Form, Formik } from "formik";
+import * as Yup from "yup";
 import { login } from "@/api";
 import { useAuth } from "@/context/authContext";
-import { Button, CircularProgress, TextField, Typography } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
-import { Form, Formik } from "formik";
-import { useRouter } from "next/navigation";
-import * as Yup from "yup";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 interface ILoginPayload {
   email: string;
@@ -15,6 +24,8 @@ interface ILoginPayload {
 
 const LoginForm: React.FC = () => {
   const { login: authenticateUser } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+
   const router = useRouter();
 
   const { mutateAsync, isPending, error } = useMutation({
@@ -25,6 +36,10 @@ const LoginForm: React.FC = () => {
     },
   });
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   const submit = async (values: ILoginPayload) => {
     mutateAsync(values);
   };
@@ -32,8 +47,8 @@ const LoginForm: React.FC = () => {
   return (
     <Formik
       initialValues={{
-        email: "",
-        password: "",
+        email: "ahmadalkali.dev@gmail.com",
+        password: "password123!",
       }}
       validationSchema={Yup.object().shape({
         email: Yup.string().required("This is a required field"),
@@ -58,13 +73,27 @@ const LoginForm: React.FC = () => {
           <TextField
             name="password"
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             size="small"
             fullWidth
+            className="mb-8"
             value={values.password}
             onChange={handleChange}
             error={touched.password && !!errors.password}
             helperText={touched.password && errors.password}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={togglePasswordVisibility}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
 
           <Button variant="text" className="block ml-auto mb-8">

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
-import "./globals.css";
-import { StyledEngineProvider } from "@mui/material";
 import { ThemeProvider as NextThemeProvider } from "next-themes";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
+import { StyledEngineProvider } from "@mui/material";
 import { LayoutFilter } from "@/components";
+import "./globals.css";
 
 const font = Nunito({
   subsets: ["latin"],

@@ -6,27 +6,38 @@ import { Box } from "@mui/material";
 import logo from "@/assets/logo.svg";
 import logoDark from "@/assets/logo-dark.svg";
 
-const Logo: React.FC = () => {
-  const { resolvedTheme } = useTheme();
+interface IProps {
+  variant?: "dark" | "light";
+}
 
+const Logo: React.FC<IProps> = ({ variant }) => {
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  return (
-    <Box className="flex w-min md:mx-auto md:mt-4 md:mb-8">
-      {mounted ? (
-        <Image
-          src={resolvedTheme == "dark" ? logoDark : logo}
-          alt="Swift Logistics"
-          className="w-24 md:w-auto"
-        />
-      ) : (
-        <Box className="h-16" />
-      )}
-    </Box>
+  let theme;
+
+  if (variant) {
+    if (variant === "dark") {
+      theme = logoDark;
+    } else {
+      theme = logo;
+    }
+  } else {
+    if (resolvedTheme == "dark") {
+      theme = logoDark;
+    } else {
+      theme = logo;
+    }
+  }
+
+  return mounted ? (
+    <Image src={theme} alt="Swift Logistics" className="w-24 md:w-auto" />
+  ) : (
+    <Box className="h-16" />
   );
 };
 
