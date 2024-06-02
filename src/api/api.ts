@@ -3,7 +3,7 @@ import { store } from "@/utils";
 import axios from "axios";
 import { refreshToken } from ".";
 
-export const BASEURL = process.env.BASE_URL;
+export const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const api = axios.create({
   baseURL: BASEURL,

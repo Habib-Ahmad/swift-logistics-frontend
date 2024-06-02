@@ -83,7 +83,7 @@ const Statistics = () => {
         <Card
           title="Ongoing Shipments"
           value={shipments?.inProgress}
-          title2="TCompleted shipments"
+          title2="Completed shipments"
           value2={shipments?.completed}
         />
 
